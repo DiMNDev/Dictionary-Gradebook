@@ -1,0 +1,144 @@
+﻿<link rel="stylesheet" href="Home.css">
+@using Dictionary_Gradebook.Library;
+@page "/"
+<PageTitle>Gradebook</PageTitle>
+
+<div class="pageGrid">
+
+   <div class="tabSection">
+      <div class="tabs">
+         <div class="tab" @onclick="()=>ChangeTab(Selected.Add)">
+            <p>
+               Add
+            </p>
+         </div>
+         <div class="tab" @onclick="()=>ChangeTab(Selected.Update)">
+            <p>
+               Update
+            </p>
+         </div>
+         <div class="tab" @onclick="()=>ChangeTab(Selected.Remove)">
+            <p>
+               Remove
+            </p>
+         </div>
+         <div class="tab" @onclick="()=>ChangeTab(Selected.Search)">
+            <p>
+               Search
+            </p>
+         </div>
+      </div>
+      <div class="forms">
+         <h1>@selected</h1>
+         @RenderTabForm()
+         <h3>@status</h3>
+      </div>
+   </div>
+   <div class="info">
+      @if (gradebook.Grades.Count != 0)
+      {
+         foreach (var (key, value) in gradebook.Students)
+         {
+            <div>
+               <h2>@key</h2>
+               <h2>@value</h2>
+               <h2>@gradebook.Grades[key]</h2>
+            </div>
+         }
+      }
+      else
+      {
+         <div>
+            <h1>Nothing to display</h1>
+         </div>
+      }
+   </div>
+</div>
+
+@code {
+
+   Selected selected = Selected.Add;
+   Gradebook gradebook = new Gradebook();
+
+   int studentId;
+   string studentName;
+   double studentGrade;
+   string status;
+
+   void ChangeTab(Selected tab)
+   {
+      if (selected == tab)
+      {
+         switch (tab)
+         {
+            case Selected.Add:
+               gradebook.AddStudent(studentId, studentName, studentGrade);
+               break;
+            case Selected.Remove:
+               gradebook.RemoveStudent(studentId);
+               break;
+            case Selected.Search:
+               gradebook.FindStudent(studentId);
+               break;
+            case Selected.Update:
+               gradebook.UpdateStudent(studentId, studentGrade);
+               break;
+         }
+      }
+      else
+      {
+         selected = tab;
+      }
+      StateHasChanged();
+   }
+
+   private RenderFragment RenderTabForm() => selected switch
+   {
+      Selected.Add => @<div class="form">
+      <label>
+         ID
+         <input type="number" @bind=studentId>
+      </label>
+      <label>
+         Name
+         <input type="text" @bind=studentName>
+      </label>
+      <label>
+         Grade
+         <input type="number" @bind=studentGrade>
+      </label>
+   </div>,
+      Selected.Remove => @<div class="form">
+      <label>
+         ID
+         <input type="number" @bind=studentId>
+      </label>
+   </div>,
+      Selected.Search => @<div class="form">
+      <label>
+         ID
+         <input type="number" @bind=studentId>
+      </label>
+   </div>,
+      Selected.Update => @<div class="form">
+      <label>
+         ID
+         <input type="number" @bind=studentId>
+      </label>
+      <label>
+         Grade
+         <input type="double" @bind=studentGrade>
+      </label>
+   </div>,
+
+      _ => @<div>Select an option</div>
+   };
+
+   enum Selected
+   {
+      Add,
+      Update,
+      Remove,
+      Search
+   }
+}

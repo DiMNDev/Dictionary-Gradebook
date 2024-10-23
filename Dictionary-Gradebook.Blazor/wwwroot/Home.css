@@ -1,0 +1,55 @@
+body {
+  box-sizing: border-box;
+  font-size: 67.5%;
+}
+
+.pageGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.tabSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 5rem;
+}
+
+.tab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 6rem;
+  height: 2rem;
+  background-color: orange;
+  border-radius: 10rem;
+  font-size: x-large;
+  padding: 1rem;
+}
+
+.tab:hover {
+  cursor: pointer;
+  scale: 105%;
+}
+.tab p {
+  color: white;
+  font-weight: 800;
+  width: 100%;
+  height: 100%;
+}
+
+.tabs {
+  display: flex;
+}
+
+.form {
+  font-size: larger;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 3rem;
+  gap: 1rem;
+}
